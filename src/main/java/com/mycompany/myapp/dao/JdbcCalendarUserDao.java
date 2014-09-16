@@ -31,15 +31,15 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     @Override
     public CalendarUser getUser(int id) throws ClassNotFoundException, SQLException   {
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/springbook?characterEncoding=utf8", "spring", "book");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/calendar", "spring", "book");
 
-		PreparedStatement ps = c.prepareStatement("select email, name from calendar_users values(?)");
+		PreparedStatement ps = c.prepareStatement("select * from calendar_users where id = ?");
 		ps.setInt(1, id);
 		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		CalendarUser calendarUser = new CalendarUser();
-		calendarUser.setId(rs.getInt("id"));
+		//calendarUser.setId(rs.getInt("id"));
 		calendarUser.setName(rs.getString("name"));
 		calendarUser.setEmail(rs.getString("email"));
 		calendarUser.setPassword(rs.getString("password"));
@@ -53,9 +53,9 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     @Override
     public CalendarUser findUserByEmail(String email) throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/springbook?characterEncoding=utf8", "spring", "book");
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/calendar", "spring", "book");
 
-		PreparedStatement ps = c.prepareStatement("iselect email, name from calendar_users values(?)");
+		PreparedStatement ps = c.prepareStatement("SELECT email, name from calendar_users values(?)");
 		ps.setString(1, email);		
 		ps.executeUpdate();				
 		ps.close();
@@ -72,6 +72,8 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 
     @Override
     public int createUser(final CalendarUser userToAdd) {
+    	CalendarUser calenderUser = new CalendarUser();
+    	
     	
         return 0;
     }
