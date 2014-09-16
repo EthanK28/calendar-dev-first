@@ -8,10 +8,14 @@ public class DaoTest {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		ApplicationContext context = null;
 		
-		CalendarUserDao calendarUserDao = null;
-		EventDao eventDao = null;
+		CalendarUserDao calendarUserDao = new JdbcCalendarUserDao();
+		//EventDao eventDao = JdbcEventDao();
 		
 		//1. 디폴트로 등록된 CalendarUser 3명 출력 (패스워드 제외한 모든 내용 출력)
+		calendarUserDao.getUser(1);
+		calendarUserDao.getUser(2);
+		calendarUserDao.getUser(3);
+		
 		//2. 디폴트로 등록된 Event 3개 출력 (owner와 attendee는 해당 사용자의 이메일과 이름을 출력) 
 		
 		//3. 새로운 CalendarUser 2명 등록 및 각각 id 추출

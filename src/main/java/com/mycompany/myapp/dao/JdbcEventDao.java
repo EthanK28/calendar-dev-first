@@ -1,11 +1,10 @@
 package com.mycompany.myapp.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.stereotype.Repository;
-
 import com.mycompany.myapp.domain.Event;
 
 @Repository
@@ -13,7 +12,9 @@ public class JdbcEventDao implements EventDao {
     private DataSource dataSource;
 
     // --- constructors ---
-    public JdbcEventDao() {
+    public JdbcEventDao() {    	
+		
+    	
     }
 
 	public void setDataSource(DataSource dataSource){
