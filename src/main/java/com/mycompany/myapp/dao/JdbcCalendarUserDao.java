@@ -1,14 +1,10 @@
 package com.mycompany.myapp.dao;
 
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.stereotype.Repository;
-
 import com.mycompany.myapp.dao.CalendarUserDao;
 import com.mycompany.myapp.domain.CalendarUser;
-
 import java.sql.*;
 import com.mysql.*;
 
@@ -19,7 +15,8 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 	private DataSource dataSource;
 
     // --- constructors ---
-    public JdbcCalendarUserDao()   {    	
+    public JdbcCalendarUserDao()   {    
+    	
     	
     }
     	
@@ -30,8 +27,10 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     // --- CalendarUserDao methods ---
     @Override
     public CalendarUser getUser(int id) throws ClassNotFoundException, SQLException   {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/calendar", "spring", "book");
+    	
+		//Class.forName("com.mysql.jdbc.Driver");
+		//Connection c = DriverManager.getConnection("jdbc:mysql://localhost/calendar?characterEncoding=UTF-8", "spring", "book");
+    	Connection c = dataSource.getConnection();
 
 		PreparedStatement ps = c.prepareStatement("select * from calendar_users where id = ?");
 		ps.setInt(1, id);
@@ -39,7 +38,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		CalendarUser calendarUser = new CalendarUser();
-		//calendarUser.setId(rs.getInt("id"));
+		calendarUser.setId(rs.getInt("id"));
 		calendarUser.setName(rs.getString("name"));
 		calendarUser.setEmail(rs.getString("email"));
 		calendarUser.setPassword(rs.getString("password"));
@@ -47,7 +46,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		rs.close();
 		ps.close();
 		c.close();		
-    	return null;
+    	return calendarUser;
     }
 
     @Override
@@ -67,6 +66,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 
     @Override
     public List<CalendarUser> findUsersByEmail(String email) {
+    	// SQL like 문 활용
     	return null;
     }
 
