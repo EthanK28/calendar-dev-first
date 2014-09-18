@@ -83,17 +83,18 @@ public class JdbcEventDao implements EventDao {
     }
 
     @Override
-    public int createEvent(final Event event) {
-        return 0;
-    }
-
-    @Override
-    public List<Event> findForUser(int userId) {
+    public int createEvent(final Event event) throws ClassNotFoundException, SQLException {
+    	Connection c = dataSource.getConnection();
         return null;
     }
 
     @Override
-    public List<Event> getEvents() {
+    public List<Event> findForUser(int userId) throws ClassNotFoundException, SQLException {
+        return null;
+    }
+
+    @Override
+    public List<Event> getEvents() throws ClassNotFoundException, SQLException {
         return null;
     }
 

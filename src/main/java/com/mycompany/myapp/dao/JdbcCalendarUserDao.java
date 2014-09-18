@@ -1,5 +1,6 @@
 package com.mycompany.myapp.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -10,6 +11,7 @@ import com.mycompany.myapp.dao.CalendarUserDao;
 import com.mycompany.myapp.domain.CalendarUser;
 
 import java.sql.*;
+
 //import com.mysql.*;
 import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -82,8 +84,26 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     public List<CalendarUser> findUsersByEmail(String email)throws ClassNotFoundException, SQLException {
     	// SQL like 문 활용
     	Connection c = dataSource.getConnection();
+    	List<CalendarUser> Array = new ArrayList<CalendarUser>();
     	
-    	return null;
+		PreparedStatement ps = c.prepareStatement("SELECT * from calendar_users like %?%");
+		ps.setString(1, "email");
+		ResultSet rs = ps.executeQuery();
+		CalendarUser calendarUser = new CalendarUser();
+		while(rs.next())
+		{			
+			calendarUser.setId(rs.getInt("id"));
+			calendarUser.setName(rs.getString("name"));
+			calendarUser.setEmail(rs.getString("email"));
+			calendarUser.setPassword(rs.getString("password"));
+			Array.add(calendarUser);
+		}
+		
+		rs.close();
+		ps.close();
+		c.close();    	
+    	
+    	return Array;
     }
 
     @Override
