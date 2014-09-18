@@ -79,8 +79,10 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     }
 
     @Override
-    public List<CalendarUser> findUsersByEmail(String email) {
+    public List<CalendarUser> findUsersByEmail(String email)throws ClassNotFoundException, SQLException {
     	// SQL like 문 활용
+    	Connection c = dataSource.getConnection();
+    	
     	return null;
     }
 
@@ -88,11 +90,12 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     public int createUser(final CalendarUser userToAdd) throws ClassNotFoundException, SQLException {
     	//CalendarUser calenderUser = new CalendarUser();
     	Connection c = dataSource.getConnection();
-		PreparedStatement ps = c.prepareStatement("insert into calendar_users(id, email, name, password) values(?,?,?,?)");
-		ps.setInt(1, userToAdd.getId());
-		ps.setString(2, userToAdd.getEmail());
-		ps.setString(3, userToAdd.getName());
-		ps.setString(4, userToAdd.getPassword());
+		//PreparedStatement ps = c.prepareStatement("insert into calendar_users(id, email, name, password) values(?,?,?,?)");
+    	PreparedStatement ps = c.prepareStatement("insert into calendar_users(email, name, password) values(?,?,?)");
+		//ps.setInt(1, userToAdd.getId());
+		ps.setString(1, userToAdd.getEmail());
+		ps.setString(2, userToAdd.getName());
+		ps.setString(3, userToAdd.getPassword());
 		ps.executeUpdate();
 
 		ps.close();

@@ -11,7 +11,7 @@ public interface CalendarUserDao {
 
     CalendarUser findUserByEmail(String email) throws ClassNotFoundException, SQLException;
 
-    List<CalendarUser> findUsersByEmail(String partialEmail);
+    List<CalendarUser> findUsersByEmail(String partialEmail) throws ClassNotFoundException, SQLException;
 
     int createUser(CalendarUser user)  throws ClassNotFoundException, SQLException;
     
