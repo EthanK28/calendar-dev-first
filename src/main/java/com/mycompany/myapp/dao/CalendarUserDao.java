@@ -13,7 +13,7 @@ public interface CalendarUserDao {
 
     List<CalendarUser> findUsersByEmail(String partialEmail);
 
-    int createUser(CalendarUser user);
+    int createUser(CalendarUser user)  throws ClassNotFoundException, SQLException;
     
     //public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }

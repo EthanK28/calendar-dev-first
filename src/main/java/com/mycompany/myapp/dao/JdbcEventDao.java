@@ -2,10 +2,19 @@ package com.mycompany.myapp.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Calendar;
+
 import javax.sql.DataSource;
+
 import org.springframework.stereotype.Repository;
+
+import com.mycompany.myapp.domain.CalendarUser;
 import com.mycompany.myapp.domain.Event;
+import com.mycompany.myapp.dao.JdbcCalendarUserDao;
 
 @Repository
 public class JdbcEventDao implements EventDao {
@@ -23,8 +32,54 @@ public class JdbcEventDao implements EventDao {
 
     // --- EventService ---
     @Override
-    public Event getEvent(int eventId) {
-        return null;
+    public Event getEvent(int eventId) throws ClassNotFoundException, SQLException  {
+    	Connection c = dataSource.getConnection();    	
+
+		PreparedStatement ps = c.prepareStatement("select * from events where id = ?");		
+		ps.setInt(1, eventId);
+		//JdbcCalendarUserDao jdbcCalendarUserDao = new JdbcCalendarUserDao();
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		
+		Event event = new Event();
+		
+		PreparedStatement ps2 = c.prepareStatement("select * from calendar_users where id = ?");
+		ps2.setInt(1, rs.getInt("owner"));
+		ResultSet rs2 = ps2.executeQuery();
+		rs2.next();
+		CalendarUser calendarUser = new CalendarUser();
+		calendarUser.setId(rs2.getInt("id"));
+		calendarUser.setName(rs2.getString("name"));
+		calendarUser.setEmail(rs2.getString("email"));
+		calendarUser.setPassword(rs2.getString("password"));
+		event.setOwner(calendarUser);		
+		
+		PreparedStatement ps3 = c.prepareStatement("select * from calendar_users where id = ?");
+		ps3.setInt(1, rs.getInt("attendee"));
+		ResultSet rs3 = ps3.executeQuery();
+		rs3.next();
+		CalendarUser calendarUser2 = new CalendarUser();
+		calendarUser2.setId(rs3.getInt("id"));
+		calendarUser2.setName(rs3.getString("name"));
+		calendarUser2.setEmail(rs3.getString("email"));
+		calendarUser2.setPassword(rs3.getString("password"));
+		event.setAttendee(calendarUser);
+		
+		event.setId(rs.getInt("id"));	
+		event.setSummary(rs.getString("summary"));
+		event.setDescription(rs.getString("description"));
+		
+		//event.setWhen(Calendar.getInstance(rs.getTimestamp("when")));
+		
+		//Cal	endarUser calendarUser = new CalendarUser();
+		
+		
+		rs.close();
+		ps.close();
+		c.close();		
+    	return event;
+        //return null;
     }
 
     @Override
