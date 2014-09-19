@@ -34,6 +34,8 @@ public class JdbcEventDao implements EventDao {
 	}
 
     // --- EventService ---
+	
+	//eventid를 얻은후 각각의 값을 새로운 event 객체 생성후 넣어 주었다. 
     @Override
     public Event getEvent(int eventId) throws ClassNotFoundException, SQLException  {
     	Connection c = dataSource.getConnection();    	
@@ -83,10 +85,10 @@ public class JdbcEventDao implements EventDao {
     	return event;
       
     }
-
+    
+    //매개 변수로 받은 event를 sql문으로 작성후 실행후 데이터베이스에 집어 넣는다. 
     @Override
-    public int createEvent(final Event event) throws ClassNotFoundException, SQLException { 	
-    	    	
+    public int createEvent(final Event event) throws ClassNotFoundException, SQLException { 	    	    	
     	
     	Connection c = dataSource.getConnection();
     	
@@ -95,8 +97,7 @@ public class JdbcEventDao implements EventDao {
     	ps.setString(1, event.getSummary());
     	ps.setString(2, event.getDescription());    	
     	ps.setInt(3, event.getOwner().getId());    	
-    	ps.setInt(4, event.getAttendee().getId());
-    	//System.out.println(ps.toString());
+    	ps.setInt(4, event.getAttendee().getId());    	
     	ps.executeUpdate();
     	
     	
@@ -106,6 +107,7 @@ public class JdbcEventDao implements EventDao {
         return 0;
     }
 
+    //userId를 입력하여 userId가 들어가 있는 이벤트 리스트를 모두 불러오게 하였다.
     @Override
     public List<Event> findForUser(int userId) throws ClassNotFoundException, SQLException {
     	Connection c = dataSource.getConnection();
@@ -124,7 +126,8 @@ public class JdbcEventDao implements EventDao {
         return Array;
     }
 
-    @Override
+    //List를 이용해 sql 문실행을 통해 얻은 Event 정보를 리스트 연결 시키고 그 값을 반환한다. 
+    @Override 
     public List<Event> getEvents() throws ClassNotFoundException, SQLException {
     	
     	Connection c = dataSource.getConnection();

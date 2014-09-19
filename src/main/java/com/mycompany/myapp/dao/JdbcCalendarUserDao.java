@@ -34,6 +34,9 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 	}
 
     // --- CalendarUserDao methods ---
+	//2008160006 강은석
+	
+	//매개변수로 받은 id를 통해 sql 문으로 값을 넘겨주고 id에 해당하곳의 값을 찾는다. 
     @Override
     public CalendarUser getUser(int id) throws ClassNotFoundException, SQLException   {    	
 
@@ -56,7 +59,8 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		c.close();		
     	return calendarUser;
     }
-
+    
+    //위와 비슷한 원리로 매겨번수로 받은 email을 sql 쿼리문에 입력시켜 데이터를 찾은후 CalendarUser 객체 생성후 값을 대입시킨후 반환한다.
     @Override
     public CalendarUser findUserByEmail(String email) throws ClassNotFoundException, SQLException {
     	Connection c = dataSource.getConnection();	
@@ -80,6 +84,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     	
     }
 
+    
     @Override
     public List<CalendarUser> findUsersByEmail(String email) throws ClassNotFoundException, SQLException {
     	// SQL like 문 활용
@@ -107,6 +112,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     	return Array;
     }
 
+    //매개변수로 받은 userToAdd 값을 클래스 sql문에 대응시킨후 실행 데이테베이스에 저장한다. 
     @Override
     public int createUser(final CalendarUser userToAdd) throws ClassNotFoundException, SQLException {
     	//CalendarUser calenderUser = new CalendarUser();
