@@ -110,7 +110,8 @@ public class DaoTest {
 		
 		for (int i = 0; i < calendarUserList.size(); i++)
 		{
-			System.out.format("ID:%d Name: %s Email: %s \n", calendarUserList.get(i).getId(), calendarUserList.get(i).getName(), calendarUserList.get(i).getEmail());
+			System.out.format("ID:%d Name: %s Email: %s \n", calendarUserList.get(i).getId(), 
+					calendarUserList.get(i).getName(), calendarUserList.get(i).getEmail());
 		}						
 		System.out.println();
 		
@@ -155,7 +156,8 @@ public class DaoTest {
 
 
 		
-		//7. 추출된 id와 함께 새로운 Event 2개를 DB에서 가져와 (getEvent 메소드 사용) 방금 추가한 2개의 이벤트와 내용 (when, summary, description, owner, attendee)이 일치하는 지 비교
+		//7. 추출된 id와 함께 새로운 Event 2개를 DB에서 가져와 (getEvent 메소드 사용) 방금 추가한 2개의 이벤트와 내용 (when, 
+		//summary, description, owner, attendee)이 일치하는 지 비교
 		
 		//equals 문을 통해 데이터 베이스에서 추출한 내용과 기존 입력을 위해 생성한 객체 사이에 값을 비교하였다. 객체를 생성할때와 
 		if (!eventDao.getEvent(eventID1).getAttendee().equals(event.getAttendee())){
@@ -194,10 +196,11 @@ public class DaoTest {
 		
 		for (int i =0; i<eventDao.getEvents().size(); i++ ){
 			String time = sdf.format(eventDao.getEvents().get(i).getWhen().getTime());			
-			System.out.format("ID: %d Time:%s Description:%s Summary: %s Owner(Email: %s, Name: %d) Attendee(Email: %s Name:%d \n", eventDao.getEvents().get(i).getId(),
-					time,eventDao.getEvents().get(i).getDescription(), eventDao.getEvents().get(i).getSummary(), 
-					eventDao.getEvents().get(i).getOwner().getEmail(),	eventDao.getEvents().get(i).getOwner().getId(), 
-					eventDao.getEvents().get(i).getAttendee().getEmail(),eventDao.getEvents().get(i).getAttendee().getId());			
+			System.out.format("ID: %d Time:%s Description:%s Summary: %s Owner(Email: %s, Name: %d) Attendee(Email: %s Name:%d \n", 
+					eventDao.getEvents().get(i).getId(),time,eventDao.getEvents().get(i).getDescription(), 
+					eventDao.getEvents().get(i).getSummary(), eventDao.getEvents().get(i).getOwner().getEmail(),	
+					eventDao.getEvents().get(i).getOwner().getId(), eventDao.getEvents().get(i).getAttendee().getEmail(),
+					eventDao.getEvents().get(i).getAttendee().getId());			
 			
 		}
 	}

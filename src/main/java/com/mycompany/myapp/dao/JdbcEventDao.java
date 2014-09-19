@@ -34,7 +34,7 @@ public class JdbcEventDao implements EventDao {
 	}
 
     // --- EventService ---
-	
+	//2008160006 강은석
 	//eventid를 얻은후 각각의 값을 새로운 event 객체 생성후 넣어 주었다. 
     @Override
     public Event getEvent(int eventId) throws ClassNotFoundException, SQLException  {
