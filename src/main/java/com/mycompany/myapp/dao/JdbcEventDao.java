@@ -5,10 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 
 import org.springframework.stereotype.Repository;
 
@@ -41,8 +44,15 @@ public class JdbcEventDao implements EventDao {
 		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
-		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(rs.getTimestamp("when"));		
 		Event event = new Event();
+		event.setId(rs.getInt("id"));
+		event.setDescription(rs.getString("description"));
+		event.setSummary(rs.getString("summary"));
+		event.setWhen(cal);
+	
+		
 		
 		PreparedStatement ps2 = c.prepareStatement("select * from calendar_users where id = ?");
 		ps2.setInt(1, rs.getInt("owner"));
@@ -53,6 +63,7 @@ public class JdbcEventDao implements EventDao {
 		calendarUser.setName(rs2.getString("name"));
 		calendarUser.setEmail(rs2.getString("email"));
 		calendarUser.setPassword(rs2.getString("password"));
+		//Ownner 가져오기
 		event.setOwner(calendarUser);		
 		
 		PreparedStatement ps3 = c.prepareStatement("select * from calendar_users where id = ?");
@@ -64,37 +75,70 @@ public class JdbcEventDao implements EventDao {
 		calendarUser2.setName(rs3.getString("name"));
 		calendarUser2.setEmail(rs3.getString("email"));
 		calendarUser2.setPassword(rs3.getString("password"));
-		event.setAttendee(calendarUser);
-		
-		event.setId(rs.getInt("id"));	
-		event.setSummary(rs.getString("summary"));
-		event.setDescription(rs.getString("description"));
-		
-		//event.setWhen(Calendar.getInstance(rs.getTimestamp("when")));
-		
-		//Cal	endarUser calendarUser = new CalendarUser();
-		
+		event.setAttendee(calendarUser2);		
 		
 		rs.close();
 		ps.close();
 		c.close();		
     	return event;
-        //return null;
+      
     }
 
     @Override
-    public int createEvent(final Event event) {
+    public int createEvent(final Event event) throws ClassNotFoundException, SQLException { 	
+    	    	
+    	
+    	Connection c = dataSource.getConnection();
+    	
+    	PreparedStatement ps = c.prepareStatement("insert into events(summary, description, owner, attendee) values(?,?,?,?)");
+	
+    	ps.setString(1, event.getSummary());
+    	ps.setString(2, event.getDescription());    	
+    	ps.setInt(3, event.getOwner().getId());    	
+    	ps.setInt(4, event.getAttendee().getId());
+    	//System.out.println(ps.toString());
+    	ps.executeUpdate();
+    	
+    	
+    	ps.close();
+    	c.close();   	
+    	
         return 0;
     }
 
     @Override
-    public List<Event> findForUser(int userId) {
-        return null;
+    public List<Event> findForUser(int userId) throws ClassNotFoundException, SQLException {
+    	Connection c = dataSource.getConnection();
+    	PreparedStatement ps = c.prepareStatement("select * from events where owner = ? or attendee = ?");
+    	ps.setInt(1, userId);
+    	ps.setInt(2, userId);
+    	ResultSet rs = ps.executeQuery();
+    	List<Event> Array = new ArrayList<Event>();  
+    	
+    	while(rs.next()){
+    		Array.add(getEvent(rs.getInt("id")));    		
+    	}  	
+    	
+    	ps.close();
+    	c.close();
+        return Array;
     }
 
     @Override
-    public List<Event> getEvents() {
-        return null;
+    public List<Event> getEvents() throws ClassNotFoundException, SQLException {
+    	
+    	Connection c = dataSource.getConnection();
+    	PreparedStatement ps = c.prepareStatement("select * from events");    	
+    	ResultSet rs = ps.executeQuery();
+    	
+    	List<Event> Array = new ArrayList<Event>();    	
+    	
+    	while(rs.next()){
+    		Array.add(getEvent(rs.getInt("id")));    
+    	}    	
+    	ps.close();
+    	c.close();
+        return Array;
     }
 
     /*

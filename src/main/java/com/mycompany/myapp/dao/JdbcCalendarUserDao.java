@@ -42,6 +42,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		PreparedStatement ps = c.prepareStatement("select * from calendar_users where id = ?");
 		ps.setInt(1, id);
 		
+		// 쿼리문 실행을 통해 Calendar_users 에서 데이터를 가져온다 . 
 		ResultSet rs = ps.executeQuery();
 		rs.next();
 		CalendarUser calendarUser = new CalendarUser();
@@ -61,7 +62,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     	Connection c = dataSource.getConnection();	
 
 		PreparedStatement ps = c.prepareStatement("SELECT * from calendar_users where email = ?");
-		ps.setString(1, "email");
+		ps.setString(1, email);
 		
 		ResultSet rs = ps.executeQuery();
 		rs.next();
@@ -83,21 +84,25 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     public List<CalendarUser> findUsersByEmail(String email) throws ClassNotFoundException, SQLException {
     	// SQL like 문 활용
     	Connection c = dataSource.getConnection();
-    	PreparedStatement ps = c.prepareStatement("SELECT * from calendar_users where email like '%?%'");
-    	ps.setString(1, "email");
+    	PreparedStatement ps = c.prepareStatement("SELECT * from calendar_users where email like ?");
+    	ps.setString(1, "%"+email+"%");    	
     	
-    	ResultSet rs = ps.executeQuery();
-    	rs.next();
+    	ResultSet rs = ps.executeQuery();    	
     	List<CalendarUser> Array = new ArrayList<CalendarUser>();
     	CalendarUser calendarUser = new CalendarUser();
+    	
     	while(rs.next()){    		
     		calendarUser.setId(rs.getInt("id"));
     		calendarUser.setName(rs.getString("name"));
     		calendarUser.setEmail(rs.getString("email"));
     		calendarUser.setPassword(rs.getString("password"));
     		Array.add(calendarUser);
-    	}   	
-    	
+    		calendarUser = new CalendarUser();
+    	}    	
+
+		rs.close();
+		ps.close();
+		c.close();	
     	
     	return Array;
     }
@@ -106,7 +111,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     public int createUser(final CalendarUser userToAdd) throws ClassNotFoundException, SQLException {
     	//CalendarUser calenderUser = new CalendarUser();
     	Connection c = dataSource.getConnection();
-		//PreparedStatement ps = c.prepareStatement("insert into calendar_users(id, email, name, password) values(?,?,?,?)");
+		
     	PreparedStatement ps = c.prepareStatement("insert into calendar_users(email, name, password) values(?,?,?)");
 		//ps.setInt(1, userToAdd.getId());
 		ps.setString(1, userToAdd.getEmail());
