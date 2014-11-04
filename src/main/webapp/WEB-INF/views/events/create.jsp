@@ -42,4 +42,3 @@
         </div>
     </fieldset>
 </form:form>
-<jsp:include page="../includes/footer.jsp"/>

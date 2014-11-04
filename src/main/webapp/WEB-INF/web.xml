@@ -5,12 +5,13 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>Calendar Web Application</display-name>
     <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            /WEB-INF/spring/services.xml
-            /WEB-INF/spring/i18n.xml
-        </param-value>
-    </context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/spring/applicationContext.xml
+			/WEB-INF/spring/i18n.xml
+		</param-value>
+	</context-param>
+	
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -20,7 +21,7 @@
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                /WEB-INF/mvc-config.xml
+				/WEB-INF/spring/appServlet/servlet-context.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

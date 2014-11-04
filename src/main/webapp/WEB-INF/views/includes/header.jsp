@@ -1,53 +1,22 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-        <title>myCalendar: <c:out value="${pageTitle}"/> </title>
-        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-        <c:url var="cssUrl" value="/resources/css/bootstrap.css"/>
-        <link href="${cssUrl}" rel="stylesheet"/>
-        <style>
-          body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-          }
-        </style>
-
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-      <div id="nav-bar" class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <c:url var="welcomeUrl" value="/" />
-                <a class="brand" href="${welcomeUrl}">myCalendar</a>
-                <div class="nav-collapse">
-                    <ul class="nav">
-                        <li><a id="navWelcomeLink" href="${welcomeUrl}">Welcome</a></li>
-                        <c:url var="eventsUrl" value="/events/" />
-                        <li><a id="navEventsLink" href="${eventsUrl}">All Events</a></li>
-                        <c:url var="myEventsUrl" value="/events/my" />
-                        <li><a id="navMyEventsLink" href="${myEventsUrl}">My Events</a></li>
-                        <c:url var="createEventUrl" value="/events/form" />
-                        <li><a id="navCreateEventLink" href="${createEventUrl}">Create Event</a></li>
-                        <c:url var="h2ConsoleUrl" value="/admin/h2" />
-                        <li><a id="navH2Link" href="${h2ConsoleUrl}">H2</a></li>
-                    </ul>
-                </div>
-                <div id="nav-account" class="nav-collapse pull-right">
-                    <ul class="nav">
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="container">
-        <c:if test="${message != null}">
-            <div class="alert alert-success" id="message"><c:out value="${message}"/></div>
-        </c:if>
-        <h1 id="title"><c:out value="${pageTitle}"/></h1>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>myCalendar</title>  
+  
+  <!-- Bootstrap -->
+  <c:url var="cssUrl" value="/resources/css/bootstrap.css"/>
+  <link href="${cssUrl}" rel="stylesheet"/>
+  <style>
+    body {
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+  </style>  
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>

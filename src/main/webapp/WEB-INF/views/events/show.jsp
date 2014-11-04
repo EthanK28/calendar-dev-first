@@ -21,4 +21,3 @@
     <dt>Message Details</dt>
     <dd id="owner"><c:out value="${event.description}"/></dd>
 </dl>
-<jsp:include page="../includes/footer.jsp"/>
